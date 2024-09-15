@@ -1,35 +1,20 @@
-RABBIT_CONTAINER_NAME=rabbitmq
-LOGISTICA_CONTAINER_NAME=logistica
+CONTAINER_NAME=cliente
 
 is_running = $(shell docker ps --filter "name=$(1)" --filter "status=running" -q)
 
 is_stopped = $(shell docker ps -a --filter "name=$(1)" --filter "status=exited" -q)
 
-start_rabbitmq:
-	@if [ -z "$(call is_running,$(RABBIT_CONTAINER_NAME))" ]; then \
-		if [ -n "$(call is_stopped,$(RABBIT_CONTAINER_NAME))" ]; then \
-			echo "Iniciando el contenedor RabbitMQ..."; \
-			docker start $(RABBIT_CONTAINER_NAME); \
+start_contenedor:
+	@if [ -z "$(call is_running,$(CONTAINER_NAME))" ]; then \
+		if [ -n "$(call is_stopped,$(CONTAINER_NAME))" ]; then \
+			echo "Iniciando el contenedor Cliente..."; \
+			docker start $(CONTAINER_NAME); \
 		else \
-			echo "RabbitMQ ya esta corriendo o no existe."; \
+			echo "Cliente ya esta corriendo o no existe."; \
 		fi \
 	else \
-		echo "RabbitMQ ya esta corriendo."; \
+		echo "Cliente ya esta corriendo."; \
 	fi
 
-# Inicia Logistica si está apagado
-start_logistica:
-	@if [ -z "$(call is_running,$(LOGISTICA_CONTAINER_NAME))" ]; then \
-		if [ -n "$(call is_stopped,$(LOGISTICA_CONTAINER_NAME))" ]; then \
-			echo "Iniciando el contenedor Logistica..."; \
-			docker start $(LOGISTICA_CONTAINER_NAME); \
-		else \
-			echo "Logistica ya esta corriendo o no existe."; \
-		fi \
-	else \
-		echo "Logistica ya esta corriendo."; \
-	fi
-
-# Comando para iniciar ambos servicios
-docker-logistica: start_rabbitmq start_logistica
-	@echo "Todos los servicios apagados se han encendido."
+docker-clientes: start_contenedor
+	@echo "Cliente se han iniciado si estaban apagados."
