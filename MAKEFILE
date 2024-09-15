@@ -31,5 +31,5 @@ start_logistica:
 	fi
 
 # Comando para iniciar ambos servicios
-start_all: start_rabbitmq start_logistica
+docker-logistica: start_rabbitmq start_logistica
 	@echo "Todos los servicios apagados se han encendido."
